@@ -18,8 +18,8 @@ spec:
       imagePullSecrets:
       - name: gitlab-auth
       containers:
-      - name: jhipster-app
-        image: registry.gitlab.com/nelhousni/{{ .Release.Name }}:{{ .Values.image_tag }}
+      - name: default
+        image: {{ .Values.docker_image }}
         resources:
           requests:
             memory: "128Mi"

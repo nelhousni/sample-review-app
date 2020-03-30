@@ -3,12 +3,14 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-  - host: {{ .Release.Namespace }}.{{ .Values.domain_name }}
+  - host: {{ printf " %s.%s" .Release.Namespace .Values.domain_name }}
     http:
       paths:
-      - path: /*
+      - path: /
         backend:
           serviceName: {{ .Release.Name }}
-          servicePort: 80
+          servicePort: 8080
