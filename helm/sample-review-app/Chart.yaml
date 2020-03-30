@@ -1,0 +1,12 @@
+name: sample-review-app
+version: 1.0.0
+appVersion: 1.0.0
+description: This is a minimalist NGIX server app with index.html only
+icon: https://www.jhipster.tech/images/logo/logo-jhipster-drink-coffee.svg
+keywords:
+- nginx
+sources:
+- https://github.com/jhipster/generator-jhipster.git
+maintainers:
+- name: Nordine EL HOUSNI
+  email: nordine@nortech.dev
