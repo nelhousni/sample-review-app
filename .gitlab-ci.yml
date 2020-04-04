@@ -3,13 +3,8 @@ stages:
     - deploy
 
 variables:
-  GKE_CLUSTER_NAME: sample-cluster
-  GKE_ZONE: europe-west1-b
-  GKE_PROJECT: private-250107
   GKE_NAMESPACE: $CI_BUILD_REF_SLUG
-  DOMAIN_NAME: sample.nortech.dev
-  DOCKER_IMAGE_TAG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA
-  DOCKER_IMAGE_FULL_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA
+  DOCKER_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHA
 
 docker-push:
     stage: release
@@ -19,8 +14,8 @@ docker-push:
     script:
         - docker build -t sample-review-app .
         - docker login registry.gitlab.com --username=$CI_REGISTRY_USER --password=$CI_REGISTRY_PASSWORD
-        - docker tag sample-review-app ${DOCKER_IMAGE_FULL_NAME}
-        - docker push ${DOCKER_IMAGE_FULL_NAME}
+        - docker tag sample-review-app ${DOCKER_IMAGE}
+        - docker push ${DOCKER_IMAGE}
         - docker logout
 
 deploy-to-review-start:
@@ -82,7 +77,7 @@ deploy-to-production:
     helm upgrade --install sample-review-app ./helm/sample-review-app \
       --namespace=${GKE_NAMESPACE} \
       --set domain_name=${DOMAIN_NAME}  \
-      --set docker_image=${DOCKER_IMAGE_FULL_NAME} \
+      --set docker_image=${DOCKER_IMAGE} \
       --set docker_registry=${CI_REGISTRY} \
       --set docker_username=${CI_REGISTRY_USER} \
       --set docker_password=${CI_REGISTRY_PASSWORD}
